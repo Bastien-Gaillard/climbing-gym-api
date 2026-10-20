@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: climbing-gym-api
+
+server:
+  port: 8080
