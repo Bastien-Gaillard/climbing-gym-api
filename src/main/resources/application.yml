@@ -1,6 +1,16 @@
 spring:
   application:
     name: climbing-gym-api
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/climbing_gym}
+    username: ${DB_USER:climbing}
+    password: ${DB_PASSWORD:climbing}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
 
 server:
   port: 8080

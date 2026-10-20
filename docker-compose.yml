@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: climbing-gym-db
+    environment:
+      POSTGRES_DB: climbing_gym
+      POSTGRES_USER: climbing
+      POSTGRES_PASSWORD: climbing
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U climbing -d climbing_gym"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:
