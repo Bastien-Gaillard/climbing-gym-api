@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-subscriptions
+      author: bastien
+      changes:
+        - createTable:
+            tableName: subscriptions
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: member_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_subscriptions_member
+                    references: members(id)
+              - column:
+                  name: type
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: remaining_entries
+                  type: int
+              - column:
+                  name: status
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+        - createIndex:
+            tableName: subscriptions
+            indexName: idx_subscriptions_member
+            columns:
+              - column:
+                  name: member_id
