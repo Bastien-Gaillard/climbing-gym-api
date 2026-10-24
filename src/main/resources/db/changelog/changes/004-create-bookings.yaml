@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-create-bookings
+      author: bastien
+      changes:
+        - createTable:
+            tableName: bookings
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: slot_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_bookings_slot
+                    references: slots(id)
+              - column:
+                  name: member_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_bookings_member
+                    references: members(id)
+              - column:
+                  name: subscription_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_bookings_subscription
+                    references: subscriptions(id)
+              - column:
+                  name: booked_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+        - createIndex:
+            tableName: bookings
+            indexName: idx_bookings_slot_status
+            columns:
+              - column:
+                  name: slot_id
+              - column:
+                  name: status
+        - createIndex:
+            tableName: bookings
+            indexName: idx_bookings_member
+            columns:
+              - column:
+                  name: member_id

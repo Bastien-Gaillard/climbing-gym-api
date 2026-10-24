@@ -10,7 +10,7 @@ public interface SlotUseCase {
 
     Slot plan(PlanSlotCommand command);
 
-    Slot findById(UUID id);
+    SlotAvailability findById(UUID id);
 
-    List<Slot> findBetween(LocalDate from, LocalDate to);
+    List<SlotAvailability> findBetween(LocalDate from, LocalDate to);
 }
