@@ -2,8 +2,10 @@ package fr.climbinggym.config;
 
 import fr.climbinggym.application.UseCase;
 import fr.climbinggym.application.port.out.MemberRepository;
+import fr.climbinggym.application.port.out.SlotRepository;
 import fr.climbinggym.application.port.out.SubscriptionRepository;
 import fr.climbinggym.application.service.MemberService;
+import fr.climbinggym.application.service.SlotService;
 import fr.climbinggym.application.service.SubscriptionService;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -51,5 +53,10 @@ public class UseCaseConfig {
     public SubscriptionService subscriptionService(SubscriptionRepository subscriptionRepository,
                                                    MemberRepository memberRepository, Clock clock) {
         return new SubscriptionService(subscriptionRepository, memberRepository, clock);
+    }
+
+    @Bean
+    public SlotService slotService(SlotRepository slotRepository, Clock clock) {
+        return new SlotService(slotRepository, clock);
     }
 }
