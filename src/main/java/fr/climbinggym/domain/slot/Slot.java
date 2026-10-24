@@ -1,5 +1,7 @@
 package fr.climbinggym.domain.slot;
 
+import fr.climbinggym.domain.member.Member;
+import fr.climbinggym.domain.shared.BusinessRuleException;
 import fr.climbinggym.domain.shared.Guard;
 import fr.climbinggym.domain.shared.InvalidValueException;
 
@@ -46,6 +48,21 @@ public final class Slot {
 
     public boolean hasStartedAt(LocalDateTime now) {
         return !now.isBefore(startsAt);
+    }
+
+    public void checkBookableBy(Member member, long confirmedBookings, LocalDateTime now) {
+        if (hasStartedAt(now)) {
+            throw new BusinessRuleException("SLOT_ALREADY_STARTED", "Slot " + id + " has already started");
+        }
+        if (confirmedBookings >= capacity) {
+            throw new BusinessRuleException("SLOT_FULL", "Slot " + id + " is full");
+        }
+        if (type.requiresBelayCertification() && !member.belayCertified()) {
+            throw new BusinessRuleException("BELAY_CERTIFICATION_REQUIRED", "Rope slots require a belay certification");
+        }
+        if (type.isKidsOnly() && !member.isMinorOn(startsAt.toLocalDate())) {
+            throw new BusinessRuleException("KIDS_ONLY_SLOT", "This slot is reserved to members under 18");
+        }
     }
 
     public int remainingPlaces(long confirmedBookings) {
