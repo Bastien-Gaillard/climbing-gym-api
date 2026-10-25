@@ -2,10 +2,12 @@ package fr.climbinggym.config;
 
 import fr.climbinggym.application.UseCase;
 import fr.climbinggym.application.port.out.BookingRepository;
+import fr.climbinggym.application.port.out.EquipmentRepository;
 import fr.climbinggym.application.port.out.MemberRepository;
 import fr.climbinggym.application.port.out.SlotRepository;
 import fr.climbinggym.application.port.out.SubscriptionRepository;
 import fr.climbinggym.application.service.BookingService;
+import fr.climbinggym.application.service.EquipmentService;
 import fr.climbinggym.application.service.MemberService;
 import fr.climbinggym.application.service.SlotService;
 import fr.climbinggym.application.service.SubscriptionService;
@@ -67,5 +69,10 @@ public class UseCaseConfig {
                                          MemberRepository memberRepository, SubscriptionRepository subscriptionRepository,
                                          Clock clock) {
         return new BookingService(bookingRepository, slotRepository, memberRepository, subscriptionRepository, clock);
+    }
+
+    @Bean
+    public EquipmentService equipmentService(EquipmentRepository equipmentRepository) {
+        return new EquipmentService(equipmentRepository);
     }
 }

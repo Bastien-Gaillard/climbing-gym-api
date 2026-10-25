@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-create-equipment-items
+      author: bastien
+      changes:
+        - createTable:
+            tableName: equipment_items
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: size
+                  type: varchar(20)
+              - column:
+                  name: total_quantity
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rented_quantity
+                  type: int
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+        - sql:
+            sql: >
+              ALTER TABLE equipment_items ADD CONSTRAINT ck_equipment_quantities
+              CHECK (rented_quantity >= 0 AND rented_quantity <= total_quantity)
