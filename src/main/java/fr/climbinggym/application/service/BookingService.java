@@ -38,7 +38,7 @@ public class BookingService implements BookingUseCase {
 
     @Override
     public Booking book(UUID slotId, UUID memberId) {
-        var slot = slots.findById(slotId).orElseThrow(() -> new NotFoundException("Slot", slotId));
+        var slot = slots.findByIdForUpdate(slotId).orElseThrow(() -> new NotFoundException("Slot", slotId));
         var member = members.findById(memberId).orElseThrow(() -> new NotFoundException("Member", memberId));
         var now = LocalDateTime.now(clock);
 

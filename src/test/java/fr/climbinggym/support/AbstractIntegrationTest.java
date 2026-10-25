@@ -11,6 +11,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.testcontainers.containers.PostgreSQLContainer;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -60,5 +62,21 @@ public abstract class AbstractIntegrationTest {
 
     protected String registerAdult(boolean belayCertified) throws Exception {
         return registerMember(uniqueEmail(), "1990-05-14", belayCertified);
+    }
+
+    protected void subscribe(String memberId, String type) throws Exception {
+        postJson("/api/members/" + memberId + "/subscriptions", "{\"type\":\"" + type + "\"}")
+                .andExpect(status().isCreated());
+    }
+
+    protected String planSlot(String type, int capacity) throws Exception {
+        var startsAt = LocalDateTime.now().plusDays(2).truncatedTo(ChronoUnit.HOURS);
+        var body = """
+                {"type":"%s","startsAt":"%s","endsAt":"%s","capacity":%d}
+                """.formatted(type, startsAt, startsAt.plusHours(2), capacity);
+        var json = postJson("/api/slots", body)
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+        return JsonPath.read(json, "$.data.id");
     }
 }

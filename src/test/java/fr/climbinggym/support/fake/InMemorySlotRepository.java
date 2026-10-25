@@ -27,6 +27,11 @@ public class InMemorySlotRepository implements SlotRepository {
     }
 
     @Override
+    public Optional<Slot> findByIdForUpdate(UUID id) {
+        return findById(id);
+    }
+
+    @Override
     public List<Slot> findStartingBetween(LocalDateTime from, LocalDateTime to) {
         return store.values().stream()
                 .filter(slot -> !slot.startsAt().isBefore(from) && slot.startsAt().isBefore(to))
