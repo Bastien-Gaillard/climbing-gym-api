@@ -11,6 +11,10 @@ spring:
       ddl-auto: validate
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
   batch:
     job:
       enabled: false

@@ -1,0 +1,9 @@
+lastName;firstName;email;birthDate;belayCertified;subscriptionType
+Durand;Léa;lea.durand@example.com;1994-03-12;oui;ANNUEL
+Martin;Hugo;hugo.martin@example.com;22/07/1988;non;MENSUEL
+Bernard;Chloé;chloe.bernard@example.com;2013-09-01;non;CARTE10
+Petit;Louis;louis.petit@example.com;1979-11-30;oui;
+Robert;Inès;ines.robert@example.com;pas-une-date;non;MENSUEL
+Richard;Nathan;lea.durand@example.com;1991-05-05;non;ANNUEL
+Moreau;Camille;camille.moreau@example.com;1999-01-17;x;TEN_ENTRIES
+Simon;Jules;jules.simon;2001-06-23;non;MENSUEL
