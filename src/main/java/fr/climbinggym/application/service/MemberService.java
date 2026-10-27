@@ -60,6 +60,11 @@ public class MemberService implements MemberUseCase {
         return members.search(query == null ? "" : query.strip());
     }
 
+    @Override
+    public boolean isEmailUsed(String email) {
+        return members.existsByEmail(Member.normalizeEmail(email));
+    }
+
     private void ensureEmailIsFree(String email) {
         if (members.existsByEmail(email)) {
             throw new BusinessRuleException("EMAIL_ALREADY_USED", "A member already uses " + email);

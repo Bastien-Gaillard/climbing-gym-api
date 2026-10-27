@@ -14,4 +14,6 @@ public interface MemberUseCase {
     Member findById(UUID id);
 
     List<Member> search(String query);
+
+    boolean isEmailUsed(String email);
 }
