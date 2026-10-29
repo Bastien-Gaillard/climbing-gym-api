@@ -7,10 +7,16 @@ on:
 
 jobs:
   backend:
-    name: Backend (build & tests)
+    name: Backend (build, tests, SonarCloud)
     runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION }}
+      SONAR_PROJECT_KEY: ${{ vars.SONAR_PROJECT_KEY }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history for SonarCloud blame / new code detection
 
       - uses: actions/setup-java@v4
         with:
@@ -19,8 +25,19 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
       - name: Build and test
         run: ./gradlew build
+
+      - name: SonarCloud analysis
+        if: env.SONAR_TOKEN != ''
+        run: ./gradlew sonar
 
       - name: Upload test reports
         if: failure()

@@ -1,7 +1,9 @@
 plugins {
     java
+    jacoco
     id("org.springframework.boot") version "3.5.6"
     id("io.spring.dependency-management") version "1.1.7"
+    id("org.sonarqube") version "6.0.1.5171"
 }
 
 group = "fr.climbinggym"
@@ -33,4 +35,26 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+sonar {
+    properties {
+        // Override with -Dsonar.organization=... / -Dsonar.projectKey=... or edit once the SonarCloud project exists
+        property("sonar.organization", System.getenv("SONAR_ORGANIZATION") ?: "change-me")
+        property("sonar.projectKey", System.getenv("SONAR_PROJECT_KEY") ?: "change-me_climbing-gym-api")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
+    }
 }
