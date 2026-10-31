@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { MembersPage } from './pages/MembersPage'
 import { PlanningPage } from './pages/PlanningPage'
 
 const TABS = ['Planning', 'Adhérents', 'Matériel'] as const
@@ -20,7 +21,9 @@ function App() {
         </nav>
       </header>
       <main>
-        {tab === 'Planning' ? <PlanningPage /> : <p className="muted">Page {tab} à venir.</p>}
+        {tab === 'Planning' && <PlanningPage />}
+        {tab === 'Adhérents' && <MembersPage />}
+        {tab === 'Matériel' && <p className="muted">Page à venir.</p>}
       </main>
     </div>
   )
