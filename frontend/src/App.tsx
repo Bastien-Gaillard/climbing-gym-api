@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { PlanningPage } from './pages/PlanningPage'
 
 const TABS = ['Planning', 'Adhérents', 'Matériel'] as const
 type Tab = (typeof TABS)[number]
@@ -19,7 +20,7 @@ function App() {
         </nav>
       </header>
       <main>
-        <p className="muted">Page {tab} à venir.</p>
+        {tab === 'Planning' ? <PlanningPage /> : <p className="muted">Page {tab} à venir.</p>}
       </main>
     </div>
   )
