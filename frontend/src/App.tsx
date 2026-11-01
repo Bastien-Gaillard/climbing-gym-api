@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { EquipmentPage } from './pages/EquipmentPage'
 import { MembersPage } from './pages/MembersPage'
 import { PlanningPage } from './pages/PlanningPage'
 
@@ -23,7 +24,7 @@ function App() {
       <main>
         {tab === 'Planning' && <PlanningPage />}
         {tab === 'Adhérents' && <MembersPage />}
-        {tab === 'Matériel' && <p className="muted">Page à venir.</p>}
+        {tab === 'Matériel' && <EquipmentPage />}
       </main>
     </div>
   )
