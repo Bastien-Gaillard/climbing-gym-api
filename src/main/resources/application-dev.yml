@@ -1,0 +1,3 @@
+logging:
+  level:
+    fr.climbinggym: DEBUG

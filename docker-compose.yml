@@ -16,5 +16,18 @@ services:
       timeout: 3s
       retries: 10
 
+  # docker compose --profile full up --build
+  api:
+    profiles: [full]
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/climbing_gym
+      SPRING_PROFILES_ACTIVE: dev
+    ports:
+      - "8080:8080"
+
 volumes:
   pgdata:
