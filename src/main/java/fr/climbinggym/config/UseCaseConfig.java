@@ -14,11 +14,11 @@ import fr.climbinggym.application.service.SubscriptionService;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Role;
-import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource;
 import org.springframework.transaction.interceptor.RollbackRuleAttribute;
 import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute;
@@ -33,19 +33,24 @@ import java.util.List;
 @Configuration
 public class UseCaseConfig {
 
+    /**
+     * The TransactionManager is not injected: the interceptor resolves it lazily from the BeanFactory,
+     * so the EntityManagerFactory is not created while post-processors are still being registered.
+     */
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public static Advisor useCaseTransactionAdvisor(TransactionManager transactionManager) {
+    public static Advisor useCaseTransactionAdvisor(BeanFactory beanFactory) {
         var attribute = new RuleBasedTransactionAttribute();
         attribute.setRollbackRules(List.of(new RollbackRuleAttribute(Exception.class)));
 
         var source = new MatchAlwaysTransactionAttributeSource();
         source.setTransactionAttribute(attribute);
 
-        return new DefaultPointcutAdvisor(
-                new AnnotationMatchingPointcut(UseCase.class, true),
-                new TransactionInterceptor(transactionManager, source)
-        );
+        var interceptor = new TransactionInterceptor();
+        interceptor.setTransactionAttributeSource(source);
+        interceptor.setBeanFactory(beanFactory);
+
+        return new DefaultPointcutAdvisor(new AnnotationMatchingPointcut(UseCase.class, true), interceptor);
     }
 
     @Bean
