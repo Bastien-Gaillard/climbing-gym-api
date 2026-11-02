@@ -19,6 +19,9 @@ repositories {
     mavenCentral()
 }
 
+// Docker Engine 29 requires API >= 1.44: Testcontainers < 1.21.4 fails with "client version 1.32 is too old"
+extra["testcontainers.version"] = "1.21.4"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
